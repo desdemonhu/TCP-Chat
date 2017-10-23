@@ -1,0 +1,27 @@
+{
+  "name": "tcp-chat",
+  "version": "1.0.0",
+  "description": "a little TCP chat service",
+  "main": "index.js",
+  "directories": {
+    "lib": "lib",
+    "test": "test"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/desdemonhu/TCP-Chat.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/desdemonhu/TCP-Chat/issues"
+  },
+  "homepage": "https://github.com/desdemonhu/TCP-Chat#readme",
+  "devDependencies": {
+    "expect": "^21.2.1",
+    "mocha": "^4.0.1"
+  }
+}
