@@ -1,5 +1,7 @@
 'use strict';
 
+const connection = require('./lib/socket.js');
+
 const net = require('net');
 const port = 3000;
 const server = net.createServer((client) => {
@@ -8,20 +10,26 @@ const server = net.createServer((client) => {
     console.log('Client disconnected.');
   })
 
-  client.write('hello\r\n');
-  client.pipe(client);
+  client.write('Welcome to my world\r\n');
 });
 
 
 server.on('connection', (socket) => {
   //assign username
   //socketPool
-  console.log(socket);
+  connection.clientCreate(socket);
+  console.log(connection.socketPool);
+  let textString = '';
 
   socket.on('data', (buffer) => {
     ///buffer has text.toString
     let text = buffer.toString();
-    console.log(text);
+    textString += text;
+// \u0003  \u0085  \u000D
+    if(text == '\u0085'){
+      console.log(textString);
+    }
+
   })
 
   /// .write to write to socketPool
