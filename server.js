@@ -10,13 +10,11 @@ const server = net.createServer((client) => {
     console.log('Client disconnected.');
   })
 
-  client.write('Welcome to my world\r\n');
+  client.write('Welcome to my world\r\n\r\n');
 });
 
 
 server.on('connection', (socket) => {
-  //assign username
-  //socketPool
 
   console.log(connection.socketPool);
   let textString = '';
@@ -24,21 +22,24 @@ server.on('connection', (socket) => {
   let socketIndex = connection.clientCreate(socket);
 
   socket.on('data', (buffer) => {
-    ///buffer has text.toString
     let text = buffer.toString();
     textString += text;
-// \u0003  \u0085  \u000D
+
+///When somene hits return start checking if it's a command or send data
     if(text == '\r\n'){
-      console.log(textString);
+      console.log(`${socketIndex}: ${textString}`);
 
       if(textString.startsWith('@')){
-        let command = textString.slice(1).split(' ');
+        let command = textString.slice(1).split('\r\n').join(' ').split(' ');
         console.log(command);
+
+        ///Looks for command in the command list
         let commandIndex = connection.commands.map(function(e){
           return e.name
         }).indexOf(command[0]);
-
         console.log(commandIndex);
+
+        ///If command is in list
         if(commandIndex > -1){
           connection.commands[commandIndex].callback(socketIndex, textString);
           textString = '';
@@ -48,6 +49,7 @@ server.on('connection', (socket) => {
           textString = '';
         }
       } else {
+        ///Send message to everyone if not a command
         connection.socketPool.forEach((client) => {
           client.socket.write(`${client.nickname}: ${textString}`);
           textString = '';
@@ -56,9 +58,8 @@ server.on('connection', (socket) => {
     }
 
   })
-
-  /// .write to write to socketPool
 });
+
 server.listen(port, () => {
     console.log("Listening on port: ", port);
   });
