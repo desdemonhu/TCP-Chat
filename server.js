@@ -45,13 +45,15 @@ server.on('connection', (socket) => {
           textString = '';
         }else {
           socket.write('command not found');
-          socket.write(`Available commands are: ${connection.commands}`);
+          socket.write(`Available commands are:\r\n`);
+          ///TODO: This should be the help menu
+
           textString = '';
         }
       } else {
         ///Send message to everyone if not a command
         connection.socketPool.forEach((client) => {
-          client.socket.write(`${client.nickname}: ${textString}`);
+          client.socket.write(`${connection.socketPool[socketIndex].nickname}: ${textString}`);
           textString = '';
         })
       }
