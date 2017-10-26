@@ -45,8 +45,7 @@ server.on('connection', (socket) => {
           textString = '';
         }else {
           socket.write('command not found');
-          socket.write(`Available commands are:\r\n`);
-          ///TODO: This should be the help menu
+          connection.commands[0].callback(socketIndex,text);
 
           textString = '';
         }
