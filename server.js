@@ -30,21 +30,21 @@ server.on('connection', (socket) => {
       console.log(`${socketIndex}: ${textString}`);
 
       if(textString.startsWith('@')){
-        let command = textString.slice(1).split('\r\n').join(' ').split(' ');
-        console.log(command);
+        let command = textString.slice(1).replace('\r\n', '').split(' ');
+        console.log(`${connection.socketPool[socketIndex].nickname}:  ${command}`);
 
         ///Looks for command in the command list
         let commandIndex = connection.commands.map(function(e){
           return e.name
         }).indexOf(command[0]);
-        console.log(commandIndex);
 
         ///If command is in list
         if(commandIndex > -1){
           connection.commands[commandIndex].callback(socketIndex, textString);
           textString = '';
         }else {
-          socket.write('command not found');
+          socket.write('command not found\r\n');
+          ///Bring up help menu
           connection.commands[0].callback(socketIndex,text);
 
           textString = '';
